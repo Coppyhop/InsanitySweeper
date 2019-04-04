@@ -1,11 +1,7 @@
 package main;
-
-
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-
 import org.lwjgl.opengl.GL11;
-
 import renderer.BitmapString;
 import renderer.RenderEngine;
 
@@ -29,28 +25,21 @@ public class SaveBox extends DialogBox{
 		saveButton = new Button ("Save",0,0){
 			@Override
 			public void click(DialogBox parent){
-
 				if(Main.input.equals("")) Main.input = "save";
-
-				try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/saves/"+Main.input+".mine"))) {
-				for(int x=0; x<TileMap.map.length;x++){
-					for(int y=0;y<TileMap.map[0].length;y++){
-						bw.append(TileMap.map[x][y].toSave() + "\n");
+				try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/saves/"+Main.input+".mine"))){
+					for(int x=0; x<TileMap.map.length;x++){
+						for(int y=0;y<TileMap.map[0].length;y++){
+							bw.append(TileMap.map[x][y].toSave() + "\n");
+						}
 					}
-				}
-				bw.close();
+					bw.close();
 				}catch (Exception e) {
-
 					e.printStackTrace();
-
 				}
 				Main.input = "";
 				parent.isSelected =false;
 				Main.dialog = false;
-
 			}
-			
-			
 		};
 		saveButton.setX(75 - saveButton.getWidth() - 2);
 		saveButton.setY(5-16);
@@ -60,12 +49,9 @@ public class SaveBox extends DialogBox{
 	public void input(int width, int height) {
 		float relativeX = Main.mousex - width/2;
 		float relativeY = Main.mousey - height/2;
-		
 		closeButton.input(relativeX, relativeY, this);
 		saveButton.input(relativeX, relativeY, this);
 		filename.input(relativeX, relativeY, this);
-
-		
 	}
 
 	@Override
@@ -88,8 +74,6 @@ public class SaveBox extends DialogBox{
 		closeButton.render();
 		saveButton.render();
 		filename.render();
-
-		
 	}
 
 }

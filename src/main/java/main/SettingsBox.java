@@ -17,15 +17,13 @@ public class SettingsBox extends DialogBox{
 		closeButton = new Button("Save",0,0);
 		closeButton.setX(75 - closeButton.getWidth() -2);
 		closeButton.setY(100 - 20);
-		
 	}
+
 	@Override
 	public void input(int width, int height) {
 		float relativeX = Main.mousex - width/2;
 		float relativeY = Main.mousey - height/2;
-		
 		closeButton.input(relativeX, relativeY, this);
-		
 	}
 
 	@Override
@@ -49,7 +47,6 @@ public class SettingsBox extends DialogBox{
 		na.render(-na.getWidth()/2, -8);
 		GL11.glColor4f(1f, 1f, 1f, 1.0f);
 		closeButton.render();
-		
 	}
 
 }

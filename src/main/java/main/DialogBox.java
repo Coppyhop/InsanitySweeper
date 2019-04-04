@@ -3,8 +3,8 @@ package main;
 public abstract class DialogBox {
 
 	public boolean isSelected = false;
-	public DialogBox(){
-	}
+
+	public DialogBox(){ }
 	
 	public abstract void input(int width, int height);
 	

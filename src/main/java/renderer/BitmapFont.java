@@ -8,7 +8,8 @@ public class BitmapFont {
 	Texture fontTexture;
 	ArrayList<BitmapGlyph> glyphs;
 	
-	public BitmapFont(float textureWidth, float textureHeight, float glyphSize, Texture fontTexture, ArrayList<BitmapGlyph> glyphs) {
+	public BitmapFont(float textureWidth, float textureHeight, float glyphSize, Texture fontTexture,
+					  ArrayList<BitmapGlyph> glyphs) {
 		super();
 		this.textureWidth = textureWidth;
 		this.textureHeight = textureHeight;
@@ -36,6 +37,5 @@ public class BitmapFont {
 	public float getGlyphSize(){
 		return glyphSize;
 	}
-	
 	
 }

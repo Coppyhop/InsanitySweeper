@@ -1,5 +1,4 @@
 package main;
-
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 
@@ -8,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 import renderer.RenderEngine;
 
 public class ScrollButton {
+
 	int x, y, direction;
 	float textIndex = 5;
 	boolean clicked, pressed;
@@ -17,7 +17,6 @@ public class ScrollButton {
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
-		
 		if(direction == 1){
 			textIndex = 2;
 		} else {
@@ -27,7 +26,6 @@ public class ScrollButton {
 	
 	public void render(){
 		GL11.glColor4f(1, 1, 1, 1);
-		
 		if(clicked){
 			if(direction == 1){
 				textIndex = 3;
@@ -55,36 +53,28 @@ public class ScrollButton {
 	}
 	
 	public void input(float rx, float ry, OpenBox parent){
-
-		
-if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
-		
-	if(rx > x && rx < (x + 16) && ry > y && ry < (y + 16)){
-		clicked = true;
-		if(!pressed){
-			if(direction == -1){
-
-				if(parent.offset > 0){
-			parent.offset-=1;	
+		if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
+			if(rx > x && rx < (x + 16) && ry > y && ry < (y + 16)){
+				clicked = true;
+				if(!pressed){
+					if(direction == -1){
+						if(parent.offset > 0){
+							parent.offset-=1;
+						}
+					} else {
+						if(parent.offset < parent.files.length - 10){
+							parent.offset+=1;
+						}
+					}
+					pressed = true;
 				}
 			} else {
-	
-				if(parent.offset < parent.files.length - 10){
-					parent.offset+=1;
-				}
-
+				clicked = false;
 			}
-			pressed = true;
+		} else {
+			clicked = false;
+			pressed = false;
 		}
-	} else {
-		clicked = false;
-
-	}
-	
-} else {
-	clicked = false;
-	pressed = false;
-}
 	}
 	
 }

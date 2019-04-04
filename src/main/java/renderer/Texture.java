@@ -1,6 +1,7 @@
 package renderer;
 
 public class Texture {
+
 	int texID;
 	
 	public Texture(int texID){
@@ -10,4 +11,5 @@ public class Texture {
 	public int getID(){
 		return texID;
 	}
+
 }

@@ -15,7 +15,6 @@ public class BitmapString {
 		char[] chars = string.toCharArray();
 		this.font = font;
 		for(char c: chars){
-			
 			for(BitmapGlyph g: font.getGlyphs() ){
 				if(g.getCharRep() == c){
 					this.string.add(g);
@@ -30,7 +29,6 @@ public class BitmapString {
 	}
 	
 	public void render(float x, float y){
-		
 		int curx = 0;
 		GL11.glPushMatrix();
 		GL11.glTranslatef(x, y, 0);
@@ -38,12 +36,10 @@ public class BitmapString {
 		GL11.glBegin(GL11.GL_QUADS);
 		for(BitmapGlyph g: string){
 			curx += g.getXoffset();
-			
 			float u = g.getX() / font.getTextureWidth();
 			float v = g.getY() / font.getTextureHeight();
 			float u2 = (g.getX() + g.getWidth()) / font.getTextureWidth();
 			float v2 = (g.getY() + g.getHeight()) / font.getTextureHeight();
-			
 			GL11.glTexCoord2f(u, v);
 		    GL11.glVertex2f(curx * scale, g.getYoffset() * scale);
 		    GL11.glTexCoord2f(u2, v);
@@ -54,22 +50,16 @@ public class BitmapString {
 		    GL11.glVertex2f(curx*scale, (g.getYoffset() + g.getHeight())*scale);
 		    curx+= g.getXadvance();
 		}
-		
 		GL11.glEnd();
 		GL11.glPopMatrix();
-		
 	}
 	
 	public float getWidth(){
 		int x = 0;
-		
 		for(BitmapGlyph s: string){
 			x+=s.getXoffset();
 			x+=s.getXadvance();
-			
-			
 		}
-		
 		return x * scale;
 	}
 

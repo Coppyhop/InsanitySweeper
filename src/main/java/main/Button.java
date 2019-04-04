@@ -1,11 +1,7 @@
 package main;
-
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
-
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-
 import renderer.BitmapString;
 import renderer.RenderEngine;
 
@@ -17,28 +13,22 @@ public class Button {
 	float width, height = 18;
 	
 	public void input(float rx, float ry, DialogBox parent){
-		
 		if(rx > x && rx < (x + width) && ry > y && ry < (y + height)){
 			hovered = true;
 		} else {
 			hovered = false;
 		}
-		
-if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
-			
-			if(hovered){
-				Main.opressed = true;
-		click(parent);
-			}
-}
+        if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
+            if(hovered){
+                Main.opressed = true;
+		        click(parent);
+            }
+        }
 	}
 	
 	public void click(DialogBox parent){
-
 			parent.isSelected =false;
 			Main.dialog = false;
-			
-		
 	}
 	
 	public Button(String text, int x, int y){
@@ -47,11 +37,10 @@ if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
 	}
 	
 	public void render(){
-		
 		if(!hovered){
-		GL11.glColor4f(0.8f, 0.8f, 0.8f, 1f);
+		    GL11.glColor4f(0.8f, 0.8f, 0.8f, 1f);
 		} else {
-		GL11.glColor4f(0.4f, 0.8f, 0.4f, 1f);
+		    GL11.glColor4f(0.4f, 0.8f, 0.4f, 1f);
 		}
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL11.glBegin(GL11.GL_QUADS);
@@ -60,10 +49,8 @@ if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
 		GL11.glVertex2f(x+width, y+height);
 		GL11.glVertex2f(x+width, y);
 		GL11.glEnd();
-		
 		GL11.glColor4f(0, 0, 0, 1f);
 		text.render(x+1, y+1);
-
 	}
 
 	public float getX() {
@@ -85,4 +72,5 @@ if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
 	public float getWidth() {
 		return width;
 	}
+
 }
