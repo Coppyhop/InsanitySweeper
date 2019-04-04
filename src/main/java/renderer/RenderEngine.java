@@ -17,6 +17,7 @@ public class RenderEngine {
 	public static BitmapFont font;
 	String version = "0.0.4";
 	DialogBox dialog = null;
+	
 	public RenderEngine(String skinName){
 		
 		Loader loader = new Loader();

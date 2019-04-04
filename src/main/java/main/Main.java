@@ -156,7 +156,7 @@ public class Main {
 			float time = (float) GLFW.glfwGetTime();
 			delta = time - lastFrame;
 			lastFrame = time;
-			if(time - lastFPS > 1){
+			if(time - lastFPS > 1f){
 				lastFPS += 1;
 				fps = (int) FPS;
 				FPS = 0;
