@@ -80,7 +80,7 @@ public class Tile {
 			this.hovered = false;
 			this.covered = false;
 			if(numMines == 0 && !mine){
-				TileMap.murrclick(x, y);
+				TileMap.needUpdates.add(this);
 			}
 		}
 	}

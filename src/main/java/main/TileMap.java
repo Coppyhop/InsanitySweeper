@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class TileMap {
@@ -7,7 +8,9 @@ public class TileMap {
 	static Tile[][] map;
 	private static Tile blankTile;
 	int defaultMines;
+	Tile currentlyHovered = null;
 	Random random = new Random();
+	public static ArrayList<Tile> needUpdates = new ArrayList<>();
 	
 	public TileMap(int width, int height, int mines){
 		map = new Tile[width][height];
@@ -56,13 +59,12 @@ public class TileMap {
 	}
 	
 	public void setHovered(int x, int y){
-		for(int xz=x-9; xz<x+9;xz++){
-			for(int yz=y-9; yz<y+9;yz++){
-				getTile(xz, yz).setHovered(false);
-			}
+		if(currentlyHovered != null){
+			currentlyHovered.setHovered(false);
 		}
 		if(x >= 0 && x < map.length && y >= 0 && y < map[0].length){
 			map[x][y].setHovered(true);
+			currentlyHovered = map[x][y];
 		}
 	}
 	
@@ -114,6 +116,7 @@ public class TileMap {
 	public void click(int x, int y){
 		if(x>=0 && y>=0 && x<=map.length && y<=map[0].length){
 			map[x][y].setHoverable();
+			update();
 		}
 	}
 	
@@ -153,7 +156,7 @@ public class TileMap {
 		if(getTile(x-1,y+1).isMine() && getTile(x-1,y+1).isCovered() == false) flags++;
 		return flags;
 	}
-	
+
 	public static void murrclick(int x, int y){
 		getTile(x-1,y).setHoverable();
 		getTile(x-1,y-1).setHoverable();
@@ -163,6 +166,15 @@ public class TileMap {
 		getTile(x+1,y+1).setHoverable();
 		getTile(x,y+1).setHoverable();
 		getTile(x-1,y+1).setHoverable();
+	}
+
+	public static void update(){
+		while(!needUpdates.isEmpty()){
+			for(Tile i:needUpdates){
+				murrclick(i.x, i.y);
+				needUpdates.remove(i);
+			}
+		}
 	}
 
 	public Tile[][] getMap(){
