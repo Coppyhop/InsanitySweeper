@@ -1,5 +1,8 @@
 # InsanitySweeper
 A Minesweeper Game Designed for Large Boards and Multiplayer Play
 
-This project is currently on Hiatus until further time can be made, sorry for lack of communication and lack of good code.
-In the future while I have time I will update the code and comment it thoroughly.
+I'm back working on this project, in another branch. The main goals currently are:
+-Fix Long Standing Bugs
+-Make game more playable (Add things like UI Scaling)
+-Optimize Save Game Format
+-Comment code and make it prettier.
