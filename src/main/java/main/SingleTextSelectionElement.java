@@ -9,9 +9,11 @@ import renderer.BitmapString;
 
 public class SingleTextSelectionElement {
 	
-	BitmapString text;
+	private final BitmapString text;
 	boolean selected;
-	float x, y, width;
+	private final float x;
+    private final float y;
+    private final float width;
 	
 	public SingleTextSelectionElement(float x, float y, float width, BitmapString text){
 		this.text = text;

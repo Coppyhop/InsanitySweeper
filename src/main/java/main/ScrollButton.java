@@ -6,12 +6,15 @@ import org.lwjgl.opengl.GL11;
 
 import renderer.RenderEngine;
 
-public class ScrollButton {
+class ScrollButton {
 
-	float x, y, direction;
-	float textIndex = 5;
-	boolean clicked, pressed;
-	float textSpace = 0.16666666666f;
+	private final float x;
+	private final float y;
+	private final float direction;
+	private float textIndex = 5;
+	private boolean clicked;
+	private boolean pressed;
+	private final float textSpace = 0.16666666666f;
 	
 	public ScrollButton(float x, float y, int direction){
 		this.x = x;
@@ -62,7 +65,7 @@ public class ScrollButton {
 							parent.offset-=1;
 						}
 					} else {
-						if(parent.offset < parent.files.length - 10){
+						if(parent.offset < OpenBox.files.length - 10){
 							parent.offset+=1;
 						}
 					}

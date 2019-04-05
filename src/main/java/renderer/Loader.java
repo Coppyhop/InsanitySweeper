@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
-public class Loader {
+class Loader {
 
 	public Texture loadTexture(String filename){
 		ByteBuffer buf = null;
@@ -44,7 +44,7 @@ public class Loader {
 	}
 	
 	public BitmapFont loadFont(String filename){
-		ArrayList<BitmapGlyph> glyphs = new ArrayList<BitmapGlyph>();
+		ArrayList<BitmapGlyph> glyphs = new ArrayList<>();
 		Texture bitmap = null;
 		float glyphSize = 0;
 		try (final BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filename)))) {
@@ -103,7 +103,10 @@ public class Loader {
 			}
 			br.close();
 			return new BitmapFont(256,256, glyphSize, bitmap, glyphs);
-		 } catch (Exception ex) {}
+		 } catch (Exception ex) {
+			ex.printStackTrace();
+			System.exit(1);
+		}
 		 return null;
 	}
 	

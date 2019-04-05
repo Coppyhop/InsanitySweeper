@@ -101,11 +101,7 @@ public class Tile {
 	
 	public void toggleFlag(){
 		if(covered){
-			if(flagged){
-				flagged = false;
-			} else {
-			flagged = true;
-			}
+			flagged = !flagged;
 		}
 	}
 	
@@ -125,7 +121,7 @@ public class Tile {
 		}
 	}
 	
-	public int mid(){
+	private int mid(){
 		if(covered && flagged &&!mine){
 			return 2;
 		}

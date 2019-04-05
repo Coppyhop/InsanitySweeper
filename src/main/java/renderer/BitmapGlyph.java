@@ -1,12 +1,15 @@
 package renderer;
 
-public class BitmapGlyph {
-	int charId;
-	char charRep;
-	float x, y;
-	float width, height;
-	int xoffset, yoffset;
-	int xadvance;
+class BitmapGlyph {
+	private final int charId;
+	private final char charRep;
+	private final float x;
+    private final float y;
+	private final float width;
+    private final float height;
+	private final int xoffset;
+    private final int yoffset;
+	private final int xadvance;
 
 	public BitmapGlyph(int charId, int x, int y, int width, int height, int xoffset, int yoffset, int xadvance) {
 		super();

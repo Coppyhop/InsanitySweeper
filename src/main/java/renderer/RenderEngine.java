@@ -12,11 +12,13 @@ import main.Tile;
 public class RenderEngine {
 	
 	
-	List<Tile> tiles = new ArrayList<Tile>();
-	public static Texture minesweeper, interfaces, icons;
+	private final List<Tile> tiles = new ArrayList<>();
+	private static Texture minesweeper;
+	public static Texture interfaces;
+	private static Texture icons;
 	public static BitmapFont font;
-	String version = "0.0.5";
-	DialogBox dialog = null;
+	private final String version = "0.0.5";
+	private DialogBox dialog = null;
 	
 	public RenderEngine(String skinName){
 		Loader loader = new Loader();

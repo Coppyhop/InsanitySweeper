@@ -6,7 +6,8 @@ import renderer.RenderEngine;
 
 public class NewBox extends DialogBox{
 
-	Button yesButton, noButton;
+	private final Button yesButton;
+	private final Button noButton;
 	
 	public NewBox(){
 		super();

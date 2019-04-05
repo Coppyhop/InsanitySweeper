@@ -1,8 +1,5 @@
 package main;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
-
 import org.lwjgl.opengl.GL11;
 
 import renderer.BitmapString;
@@ -10,9 +7,11 @@ import renderer.RenderEngine;
 
 public class SettingsBox extends DialogBox{
 
-	Button closeButton;
-	Button uiBigger, uiSmaller;
-	Button minesBigger, minesSmaller;
+	private final Button closeButton;
+	private final Button uiBigger;
+	private final Button uiSmaller;
+	private final Button minesBigger;
+	private final Button minesSmaller;
 	
 	public SettingsBox(){
 		super();

@@ -10,9 +10,11 @@ import renderer.RenderEngine;
 
 public class OpenBox extends DialogBox{
 
-	Button closeButton, openButton;
-	ScrollButton upButton, downButton;
-	File[] saves;
+	private final Button closeButton;
+	private final Button openButton;
+	private final ScrollButton upButton;
+	private final ScrollButton downButton;
+	private File[] saves;
 	public static SingleTextSelectionElement[] files;
 	int offset = 0;
 	

@@ -5,23 +5,22 @@ import org.lwjgl.opengl.GL11;
 import renderer.BitmapString;
 import renderer.RenderEngine;
 
-public class Button {
+class Button {
 
-	BitmapString text;
-	boolean hovered = true, clicked = false;
-	float x, y;
-	float width, height = 18;
+	private final BitmapString text;
+	private boolean hovered = true;
+    private boolean clicked = false;
+	private float x;
+    private float y;
+	private float width;
+    private final float height = 18;
 	
 	public void input(float rx, float ry, DialogBox parent){
-		if(rx > x*Main.UI_SCALE && rx < (x*Main.UI_SCALE + width) && ry > y*Main.UI_SCALE && ry < (y*Main.UI_SCALE + height*Main.UI_SCALE)){
-			hovered = true;
-		} else {
-			hovered = false;
-		}
+        hovered = rx > x * Main.UI_SCALE && rx < (x * Main.UI_SCALE + width) && ry > y * Main.UI_SCALE && ry < (y * Main.UI_SCALE + height * Main.UI_SCALE);
         if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
             if(hovered){
                 Main.opressed = true;
-                if(clicked == false) {
+                if(!clicked) {
 					click(parent);
 					clicked = true;
 				}
@@ -31,7 +30,7 @@ public class Button {
 		}
 	}
 	
-	public void click(DialogBox parent){
+	void click(DialogBox parent){
 			parent.isSelected =false;
 			Main.dialog = false;
 	}

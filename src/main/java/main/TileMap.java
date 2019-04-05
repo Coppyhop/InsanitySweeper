@@ -1,17 +1,16 @@
 package main;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TileMap {
+class TileMap {
 
 	static Tile[][] map;
 	private static Tile blankTile;
-	int defaultMines;
-	Tile currentlyHovered = null;
-	Random random = new Random();
-	public static ArrayList<Tile> needUpdates = new ArrayList<>();
+	private final int defaultMines;
+	private Tile currentlyHovered = null;
+	private final Random random = new Random();
+	public static final ArrayList<Tile> needUpdates = new ArrayList<>();
 	
 	public TileMap(int width, int height, int mines){
 		map = new Tile[width][height];
@@ -69,7 +68,7 @@ public class TileMap {
 		}
 	}
 	
-	public static void setMines(int x, int y){
+	private static void setMines(int x, int y){
 		int mines = 0;
 		if(x!= 0){
 			if(map[x-1][y].isMine()){
@@ -129,7 +128,7 @@ public class TileMap {
 		map[x][y].toggleFlag();
 	}
 	
-	public static Tile getTile(int x, int y){
+	private static Tile getTile(int x, int y){
 		if(x<=-1 || y<=-1 || x>=map.length || y>=map[0].length){
 			return blankTile;
 		} else {
@@ -147,14 +146,14 @@ public class TileMap {
 		if(getTile(x+1,y+1).isFlagged()) flags++;
 		if(getTile(x,y+1).isFlagged()) flags++;
 		if(getTile(x-1,y+1).isFlagged()) flags++;
-		if(getTile(x-1,y).isMine() && getTile(x-1,y).isCovered() == false) flags++;
-		if(getTile(x-1,y-1).isMine() && getTile(x-1,y-1).isCovered() == false) flags++;
-		if(getTile(x,y-1).isMine() && getTile(x,y-1).isCovered() == false) flags++;
-		if(getTile(x+1,y-1).isMine() && getTile(x+1,y-1).isCovered() == false) flags++;
-		if(getTile(x+1,y).isMine() && getTile(x+1,y).isCovered() == false) flags++;
-		if(getTile(x+1,y+1).isMine() && getTile(x+1,y+1).isCovered() == false) flags++;
-		if(getTile(x,y+1).isMine() && getTile(x,y+1).isCovered() == false) flags++;
-		if(getTile(x-1,y+1).isMine() && getTile(x-1,y+1).isCovered() == false) flags++;
+		if(getTile(x-1,y).isMine() && !getTile(x - 1, y).isCovered()) flags++;
+		if(getTile(x-1,y-1).isMine() && !getTile(x - 1, y - 1).isCovered()) flags++;
+		if(getTile(x,y-1).isMine() && !getTile(x, y - 1).isCovered()) flags++;
+		if(getTile(x+1,y-1).isMine() && !getTile(x + 1, y - 1).isCovered()) flags++;
+		if(getTile(x+1,y).isMine() && !getTile(x + 1, y).isCovered()) flags++;
+		if(getTile(x+1,y+1).isMine() && !getTile(x + 1, y + 1).isCovered()) flags++;
+		if(getTile(x,y+1).isMine() && !getTile(x, y + 1).isCovered()) flags++;
+		if(getTile(x-1,y+1).isMine() && !getTile(x - 1, y + 1).isCovered()) flags++;
 		return flags;
 	}
 
@@ -169,7 +168,9 @@ public class TileMap {
 		getTile(x-1,y+1).setHoverable();
 	}
 
-	public static void update(){
+	@SuppressWarnings("unchecked")
+	//This suppresses the Tile List copy warning.
+	private static void update(){
 		boolean needsUpdates = true;
 		while(needsUpdates) {
 			ArrayList<Tile> tilesGettingUpdates = (ArrayList<Tile>) needUpdates.clone();

@@ -7,9 +7,9 @@ import main.Main;
 
 public class BitmapString {
 	
-	ArrayList<BitmapGlyph> string = new ArrayList<BitmapGlyph>();
-	BitmapFont font;
-	float scale;
+	private final ArrayList<BitmapGlyph> string = new ArrayList<>();
+	private final BitmapFont font;
+	private final float scale;
 	
 	public BitmapString(String string, BitmapFont font, float scale){
 		this.scale = scale * ((float) 32/font.getGlyphSize());

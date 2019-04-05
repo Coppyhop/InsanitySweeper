@@ -10,12 +10,15 @@ import org.lwjgl.opengl.GL11;
 import renderer.BitmapString;
 import renderer.RenderEngine;
 
-public class TextBox {
+class TextBox {
 
-	String heldText = "";
-	float width, height;
-	float x, y;
-	boolean selected = false, pressed = false;
+	private String heldText = "";
+	private final float width;
+	private final float height;
+	private final float x;
+	private final float y;
+	private boolean selected = false;
+	private boolean pressed = false;
 	
 	public TextBox(float x, float y, float width){
 		height= 18;
@@ -41,11 +44,7 @@ public class TextBox {
 			}
 		}
 		if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
-			if(rx > x*Main.UI_SCALE && rx < (x*Main.UI_SCALE + width * Main.UI_SCALE) && ry > y*Main.UI_SCALE && ry < (y*Main.UI_SCALE + (height * Main.UI_SCALE))){
-				selected = true;
-			}  else {
-				selected = false;
-			}
+            selected = rx > x * Main.UI_SCALE && rx < (x * Main.UI_SCALE + width * Main.UI_SCALE) && ry > y * Main.UI_SCALE && ry < (y * Main.UI_SCALE + (height * Main.UI_SCALE));
 		}
 	}
 	

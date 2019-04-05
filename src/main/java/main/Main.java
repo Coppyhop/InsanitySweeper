@@ -13,36 +13,53 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.system.MemoryStack;
 
-import renderer.Loader;
 import renderer.RenderEngine;
-import renderer.Texture;
 
 public class Main {
 
-	float viewx = 0, viewy = 0, smoothx = 0, smoothy =0;
-	static int width=1024, height=768, mapheight = 1600, mapwidth = 3000, nummines = 99999;
-	float delta, lastFrame, lastFPS, FPS;
+	private float viewx = 0;
+	private float viewy = 0;
+	private float smoothx = 0;
+	private float smoothy =0;
+	private static int width=1024;
+	private static int height=768;
+	private static final int mapheight = 1600;
+	private static final int mapwidth = 3000;
+	private static final int nummines = 99999;
+	private float delta;
+	private float lastFrame;
+	private float lastFPS;
+	private float FPS;
 	public static float UI_SCALE = 2f, GAME_SCALE = 1.5f;
-	int fps = 0, selicon = -1;
+	private int fps = 0;
+	private int selicon = -1;
 	static float mousex =0, mousey =0;
 	public static boolean dialog = false;
-	RenderEngine renderer;
-	OpenBox open;
-	SaveBox save;
-	NewBox newbox;
-	SettingsBox settings;
+	private RenderEngine renderer;
+	private OpenBox open;
+	private SaveBox save;
+	private NewBox newbox;
+	private SettingsBox settings;
 	public static String input="";
 	public static long window;
 	static TileMap map;
-	public static boolean refreshed = false, pressed = false, rpressed = false,
-			opressed = false, hgrabbed = false, vgrabbed = false;
+	private static boolean refreshed = false;
+	private static boolean pressed = false;
+	private static boolean rpressed = false;
+	public static boolean opressed = false;
+	public static boolean hgrabbed = false;
+	public static boolean vgrabbed = false;
+	private static boolean justExited = false;
 	
 	//Options
-	boolean smoothScroll = true, useModern = false, useVsync = false, safeMode = false;
+	private final boolean smoothScroll = true;
+	boolean useModern = false;
+	private final boolean useVsync = false;
+	private final boolean safeMode = false;
 	//Use Modern means "use VBOs", not implemented yet
-	float smoothFriction = 0.75f; //Friction of the smooth scrolling
+	private final float smoothFriction = 0.75f; //Friction of the smooth scrolling
 	
-	public Main(){
+	private Main(){
 		GLFWErrorCallback.createPrint(System.err).set();
 		if ( !glfwInit() )
 			throw new IllegalStateException("Unable to initialize GLFW");
@@ -140,8 +157,15 @@ public class Main {
 			}
 			FPS++;
 			if(!dialog){
+			    if(justExited){
+			        mousex = 0;
+			        mousey = 0;
+			        justExited = false;
+                }
 				input();
 			} else {
+			    selicon = -1;
+			    justExited = true;
 				if(save.isSelected){
 					renderer.setDialog(save);
 					save.input(width, height);
@@ -200,7 +224,7 @@ public class Main {
 		glfwSetErrorCallback(null).free();
 	}
 	
-	public void input(){
+	private void input(){
 		if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 0){
 			if(hgrabbed){
 				hgrabbed = false;
