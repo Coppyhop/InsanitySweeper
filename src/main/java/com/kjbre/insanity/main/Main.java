@@ -1,7 +1,9 @@
 package com.kjbre.insanity.main;
 
+import com.kjbre.insanity.engine.Rectangle;
 import com.kjbre.insanity.rendering.RenderEngine;
 import com.kjbre.insanity.rendering.WindowManager;
+import com.kjbre.insanity.tools.Vector3f;
 
 public class Main {
 
@@ -12,7 +14,10 @@ public class Main {
         long window = WindowManager.createWindow(1024, 768, "Test", false);
         renderEngine = new RenderEngine(window);
         renderEngine.init();
+        Rectangle rectangle = new Rectangle(200,200, 200,200);
+        rectangle.setColor(new Vector3f(1,0,0));
         while(!WindowManager.shouldWindowClose(window)){
+            renderEngine.processRectangle(rectangle);
             renderEngine.render();
             WindowManager.update(window);
         }
