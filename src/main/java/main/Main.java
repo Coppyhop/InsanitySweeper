@@ -20,7 +20,7 @@ import renderer.Texture;
 public class Main {
 
 	float viewx = 0, viewy = 0, smoothx = 0, smoothy =0;
-	static int width=1024, height=768, mapheight = 1600, mapwidth = 3000, nummines = 999999;
+	static int width=1024, height=768, mapheight = 1600, mapwidth = 3000, nummines = 99999;
 	float delta, lastFrame, lastFPS, FPS;
 	public static float UI_SCALE = 2f, GAME_SCALE = 1.5f;
 	int fps = 0, selicon = -1;

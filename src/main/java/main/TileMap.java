@@ -1,5 +1,6 @@
 package main;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -169,10 +170,16 @@ public class TileMap {
 	}
 
 	public static void update(){
-		while(!needUpdates.isEmpty()){
-			for(Tile i:needUpdates){
+		boolean needsUpdates = true;
+		while(needsUpdates) {
+			ArrayList<Tile> tilesGettingUpdates = (ArrayList<Tile>) needUpdates.clone();
+			for (Tile i : tilesGettingUpdates) {
 				murrclick(i.x, i.y);
 				needUpdates.remove(i);
+			}
+
+			if(needUpdates.size() == 0){
+				needsUpdates = false;
 			}
 		}
 	}
