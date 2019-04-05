@@ -1,12 +1,12 @@
-package main;
+package com.kjbre.insanity.main;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import org.lwjgl.opengl.GL11;
-import renderer.BitmapString;
-import renderer.RenderEngine;
+import com.kjbre.insanity.renderer.BitmapString;
+import com.kjbre.insanity.renderer.RenderEngine;
 
 public class OpenBox extends DialogBox{
 

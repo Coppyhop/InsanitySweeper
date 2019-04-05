@@ -1,8 +1,8 @@
-package main;
+package com.kjbre.insanity.main;
 
 import org.lwjgl.opengl.GL11;
-import renderer.BitmapString;
-import renderer.RenderEngine;
+import com.kjbre.insanity.renderer.BitmapString;
+import com.kjbre.insanity.renderer.RenderEngine;
 
 public class NewBox extends DialogBox{
 

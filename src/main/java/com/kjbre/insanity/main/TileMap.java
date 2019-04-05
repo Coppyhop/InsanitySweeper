@@ -1,4 +1,4 @@
-package main;
+package com.kjbre.insanity.main;
 
 import java.util.ArrayList;
 import java.util.Random;

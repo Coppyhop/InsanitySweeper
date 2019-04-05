@@ -1,4 +1,4 @@
-package renderer;
+package com.kjbre.insanity.renderer;
 
 public class Texture {
 

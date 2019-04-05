@@ -1,10 +1,10 @@
-package main;
+package com.kjbre.insanity.main;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 
 import org.lwjgl.opengl.GL11;
 
-import renderer.RenderEngine;
+import com.kjbre.insanity.renderer.RenderEngine;
 
 class ScrollButton {
 

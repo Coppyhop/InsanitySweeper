@@ -1,4 +1,4 @@
-package main;
+package com.kjbre.insanity.main;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.glfwGetKey;
@@ -7,8 +7,8 @@ import static org.lwjgl.glfw.GLFW.glfwGetMouseButton;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import renderer.BitmapString;
-import renderer.RenderEngine;
+import com.kjbre.insanity.renderer.BitmapString;
+import com.kjbre.insanity.renderer.RenderEngine;
 
 class TextBox {
 

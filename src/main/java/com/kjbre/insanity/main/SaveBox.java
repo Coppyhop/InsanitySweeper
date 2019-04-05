@@ -1,9 +1,9 @@
-package main;
+package com.kjbre.insanity.main;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import org.lwjgl.opengl.GL11;
-import renderer.BitmapString;
-import renderer.RenderEngine;
+import com.kjbre.insanity.renderer.BitmapString;
+import com.kjbre.insanity.renderer.RenderEngine;
 
 public class SaveBox extends DialogBox{
 

@@ -1,13 +1,13 @@
-package renderer;
+package com.kjbre.insanity.renderer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import main.DialogBox;
-import main.Main;
-import main.Tile;
+import com.kjbre.insanity.main.DialogBox;
+import com.kjbre.insanity.main.Main;
+import com.kjbre.insanity.main.Tile;
 
 public class RenderEngine {
 	

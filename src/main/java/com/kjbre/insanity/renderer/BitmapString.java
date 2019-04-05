@@ -1,9 +1,9 @@
-package renderer;
+package com.kjbre.insanity.renderer;
 
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
-import main.Main;
+import com.kjbre.insanity.main.Main;
 
 public class BitmapString {
 	

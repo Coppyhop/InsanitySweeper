@@ -1,4 +1,4 @@
-package renderer;
+package com.kjbre.insanity.renderer;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;

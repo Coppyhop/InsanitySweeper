@@ -1,4 +1,4 @@
-package main;
+package com.kjbre.insanity.main;
 
 public class Tile {
 	
