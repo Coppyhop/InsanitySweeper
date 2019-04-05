@@ -8,6 +8,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
 
+import com.kjbre.insanity.renderer.WindowManager;
+import com.sun.javaws.WinOperaSupport;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -47,49 +49,16 @@ public class Main {
 	private static boolean pressed = false;
 	private static boolean rpressed = false;
 	public static boolean opressed = false;
-	public static boolean hgrabbed = false;
-	public static boolean vgrabbed = false;
-	private static boolean justExited = false;
 	
 	//Options
 	private final boolean smoothScroll = true;
-	boolean useModern = false;
-	private final boolean useVsync = false;
-	private final boolean safeMode = false;
-	//Use Modern means "use VBOs", not implemented yet
 	private final float smoothFriction = 0.75f; //Friction of the smooth scrolling
 	
 	private Main(){
-		GLFWErrorCallback.createPrint(System.err).set();
-		if ( !glfwInit() )
-			throw new IllegalStateException("Unable to initialize GLFW");
-		glfwDefaultWindowHints();
-		glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); 
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-		window = glfwCreateWindow(width, height, "Insanity Sweeper", NULL, NULL);
-		if ( window == NULL )
-			throw new RuntimeException("Failed to create the GLFW window");
-		glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-			if ( key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE )
-				glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-		});
-		try ( MemoryStack stack = stackPush() ) {
-			IntBuffer pWidth = stack.mallocInt(1);
-			IntBuffer pHeight = stack.mallocInt(1);
-			glfwGetWindowSize(window, pWidth, pHeight);
-			GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-			glfwSetWindowPos(
-				window,
-				(vidmode.width() - pWidth.get(0)) / 2,
-				(vidmode.height() - pHeight.get(0)) / 2
-			);
-		}
-		glfwMakeContextCurrent(window);
-		if(useVsync){
-			glfwSwapInterval(1);
-		}
-		glfwShowWindow(window);	
-		GL.createCapabilities();
+		WindowManager.init();
+		window = WindowManager.createWindow(1024,768, "Insanity Sweeper", false);
+
+		//TODO: Make this into an input Class
 		GLFWWindowSizeCallback windowSizeCallback;
 		glfwSetWindowSizeCallback(window, windowSizeCallback = new GLFWWindowSizeCallback(){
             @Override
@@ -128,24 +97,22 @@ public class Main {
 				}
 			}
 		});
-		renderer = new RenderEngine("default");
+		//END INPUT CLASS STUFF
+
+		//TODO Rework RenderEngine into the lowest level rendering.
+		renderer = new RenderEngine("default", width, height);
+
+		//Highest Level Of Game
 		map = new TileMap(mapwidth,mapheight,nummines);
+
+		//TODO Rework the GUI System into one with greater flexibility
 		open = new OpenBox();
 		save = new SaveBox();
 		settings = new SettingsBox();
 		newbox = new NewBox();
-		GL11.glViewport(0, 0, width, height);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		if(!safeMode){
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		}
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GL11.glOrtho(-width/2, width/2, height/2, -height/2, 1, -1);
-		GL11.glTranslatef(-width/2, -height/2, 0);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		while ( !glfwWindowShouldClose(window) ) {
+
+		while (!WindowManager.shouldWindowClose(window)) {
+			//TODO All GL Calls should only Occur in the RenderEngine.
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			float time = (float) GLFW.glfwGetTime();
 			delta = time - lastFrame;
@@ -156,33 +123,12 @@ public class Main {
 				FPS = 0;
 			}
 			FPS++;
-			if(!dialog){
-			    if(justExited){
-			        mousex = 0;
-			        mousey = 0;
-			        justExited = false;
-                }
-				input();
-			} else {
-			    selicon = -1;
-			    justExited = true;
-				if(save.isSelected){
-					renderer.setDialog(save);
-					save.input(width, height);
-				}
-				if(open.isSelected){
-					renderer.setDialog(open);
-					open.input(width, height);
-				}
-				if(settings.isSelected){
-					renderer.setDialog(settings);
-					settings.input(width, height);
-				}
-				if(newbox.isSelected){
-					renderer.setDialog(newbox);
-					newbox.input(width, height);
-				}
-			}
+
+			//TODO GUIHandlerInputCode here
+			input();
+			//END
+
+			//The Render Engine should handle all GAME_SCALE references in the Future
 			if(smoothScroll){
 				viewx += smoothx*GAME_SCALE;
 				viewy += smoothy*GAME_SCALE;
@@ -201,6 +147,7 @@ public class Main {
 			if(viewy >= 64*GAME_SCALE){
 				viewy =64*GAME_SCALE;
 			}
+
 			Tile[][] tiles = map.getMap();
 			float squaresize = 16*GAME_SCALE;
 			float minx = (float) -Math.ceil(viewx/squaresize)-1;
@@ -214,28 +161,16 @@ public class Main {
 					}
 				}
 			}
-			renderer.render(width, height, viewx, viewy, mapwidth, mapheight, fps, selicon);
-			glfwSwapBuffers(window);
-			glfwPollEvents();
+
+			//TODO: Make GUI.render call after this
+			renderer.renderTiles(viewx, viewy);
+			WindowManager.update(window);
 		}
-		glfwFreeCallbacks(window);
-		glfwDestroyWindow(window);
-		glfwTerminate();
-		glfwSetErrorCallback(null).free();
+		WindowManager.destroyWindow(window);
 	}
-	
+
+	//TODO InputManager class maybe?
 	private void input(){
-		if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 0){
-			if(hgrabbed){
-				hgrabbed = false;
-				justExited = true;
-			}
-			if(vgrabbed){
-				vgrabbed = false;
-				justExited = true;
-			}
-		}
-		
 		if(glfwGetKey(window, GLFW_KEY_A) == 1){
 			if(!smoothScroll){
 				viewx += (480 / GAME_SCALE) * delta;
@@ -277,7 +212,7 @@ public class Main {
 			refreshed = false;
 		}
 		
-		if(mousex < width - 16*UI_SCALE && mousey < height -48*UI_SCALE){
+		if(mousex < width && mousey < height){
 			int tilex = (int) (Math.floor((-viewx + mousex))/(16*GAME_SCALE));
 			int tiley = (int) (Math.floor((-viewy + mousey))/(16*GAME_SCALE));
 			if(!opressed){
@@ -309,76 +244,6 @@ public class Main {
 			} else {
 				rpressed = false;
 			}
-			selicon = -1;
-		} else {
-			if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 1){
-				if(selicon == 0){
-					newbox.isSelected = true;
-					dialog = true;
-				}
-				if(selicon == 1){
-					open.isSelected = true;
-					open.update();
-					dialog = true;
-				}
-				if(selicon == 2){
-					save.isSelected = true;
-					dialog = true;
-				}
-				if(selicon == 3){
-					settings.isSelected = true;
-					dialog = true;
-				}
-			}
-			if(mousey < height -16*UI_SCALE){
-				if(!opressed){
-					if(mousex > 0 && mousex < 32*UI_SCALE){
-						selicon = 0;
-					} else if(mousex > 32*UI_SCALE && mousex < 64*UI_SCALE){
-						selicon = 1;
-					}  else if(mousex > 64*UI_SCALE && mousex < 96*UI_SCALE){
-						selicon = 2;
-					} else if(mousex > 96*UI_SCALE && mousex < 128*UI_SCALE){
-						selicon = 3;
-					} else {
-						selicon = -1;
-					}
-				}
-			} else {
-				selicon = -1;
-			}
-			if(mousex > width -16*UI_SCALE){
-				if(mapheight * 16*GAME_SCALE > height){
-					if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 1){
-						if(!hgrabbed && !opressed){
-						vgrabbed = true;
-						opressed = true;
-						}
-					}
-				}
-			}
-			if(mapwidth * 16*GAME_SCALE > width){
-				if(mousey > height -16*UI_SCALE){
-					if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 1){
-						if(!vgrabbed && !opressed){
-							hgrabbed = true;
-							opressed = true;
-						}
-					}
-				}
-			}
-		}
-		if(hgrabbed){
-		    float totalpixelshigh = (mapwidth * 16 *GAME_SCALE + 32*GAME_SCALE) - width;
-		    totalpixelshigh = totalpixelshigh/(width-16*GAME_SCALE);
-		    float y = (mousex)*(totalpixelshigh);
-		    viewx = -y;
-		}
-		if(vgrabbed){
-		    float totalpixelshigh = (mapheight * 16*GAME_SCALE + 32*GAME_SCALE) - height;
-		    totalpixelshigh = totalpixelshigh/height;
-		    float y = (mousey)*(totalpixelshigh);
-		    viewy = -y;
 		}
 	}
 	
