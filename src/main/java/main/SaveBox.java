@@ -30,8 +30,9 @@ public class SaveBox extends DialogBox{
 				try (BufferedWriter bw = new BufferedWriter(new FileWriter("data/saves/"+Main.input+".mine"))){
 					for(int x=0; x<TileMap.map.length;x++){
 						for(int y=0;y<TileMap.map[0].length;y++){
-							bw.append(TileMap.map[x][y].toSave()).append("\n");
+							bw.append(TileMap.map[x][y].toSave());
 						}
+						bw.append('\n');
 					}
 				}catch (Exception e) {
 					e.printStackTrace();

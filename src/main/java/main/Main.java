@@ -228,9 +228,11 @@ public class Main {
 		if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 0){
 			if(hgrabbed){
 				hgrabbed = false;
+				justExited = true;
 			}
 			if(vgrabbed){
 				vgrabbed = false;
+				justExited = true;
 			}
 		}
 		

@@ -40,13 +40,15 @@ public class OpenBox extends DialogBox{
 								 new BufferedReader(new InputStreamReader(
 								 		new FileInputStream("data/saves/" + saveGame.getName())))) {
 						String line;
+						int x = 0;
 						while ((line = br.readLine()) != null) {
 						 	if (line.isEmpty()) { continue; }
-						 		String[] tile = line.split(" ");
-						 		int x = Integer.valueOf(tile[0]);
-						 		int y = Integer.valueOf(tile[1]);
-						 		int mid = Integer.valueOf(tile[2]);
-						 		map[x][y] = new Tile(x, y, mid);
+						 		int y = 0;
+								for (y = 0; y < line.length(); y++){
+									char mid = line.charAt(y);
+									map[x][y] = new Tile(x, y, mid);
+								}
+							x++;
 						}
 						br.close();
 						TileMap.setMap(map);

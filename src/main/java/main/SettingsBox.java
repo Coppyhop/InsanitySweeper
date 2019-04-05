@@ -87,8 +87,8 @@ public class SettingsBox extends DialogBox{
 		GL11.glEnd();
 		GL11.glColor4f(1f, 1f, 1f, 1.0f);
 		BitmapString test = new BitmapString("Settings", RenderEngine.font, 0.5f);
-		BitmapString na = new BitmapString("UI Scale", RenderEngine.font, 0.5f);
-		BitmapString gs = new BitmapString("Game Scale", RenderEngine.font, 0.5f);
+		BitmapString na = new BitmapString("UI Scale: " + Main.UI_SCALE, RenderEngine.font, 0.5f);
+		BitmapString gs = new BitmapString("Game Scale: " + Main.GAME_SCALE, RenderEngine.font, 0.5f);
 		test.render(-test.getWidth()/2, -100*Main.UI_SCALE);
 		na.render(-73 * Main.UI_SCALE, -84*Main.UI_SCALE);
 		gs.render(-73 * Main.UI_SCALE, -40*Main.UI_SCALE);

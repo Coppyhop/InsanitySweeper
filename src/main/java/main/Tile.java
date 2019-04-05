@@ -14,32 +14,32 @@ public class Tile {
 		numMines = 0;
 	}
 	
-	public Tile(int x, int y, int mid){
+	public Tile(int x, int y, char mid){
 		this.x = x;
 		this.y = y;
-		if(mid ==0){
+		if(mid =='0'){
 			covered = true;
 			mine = false;
 		}
-		if(mid == 1){
+		if(mid == '1'){
 			covered = true;
 			mine = true;
 		}
-		if(mid == 2){
-			covered = true;
-			flagged = true;
-			mine = true;
-		}
-		if(mid == 3){
+		if(mid == '2'){
 			covered = true;
 			flagged = true;
 			mine = true;
 		}
-		if(mid == 4){
+		if(mid == '3'){
+			covered = true;
+			flagged = true;
+			mine = true;
+		}
+		if(mid == '4'){
 			covered = false;
 			mine = true;
 		}
-		if(mid == 5){
+		if(mid == '5'){
 			covered = false;
 			mine = false;
 		}
@@ -121,30 +121,30 @@ public class Tile {
 		}
 	}
 	
-	private int mid(){
+	private char mid(){
 		if(covered && flagged &&!mine){
-			return 2;
+			return '2';
 		}
 		if(covered && flagged && mine){
-			return 3;
+			return '3';
 		}
 		if(covered && !mine){
-			return 0;
+			return '0';
 		}
 		if(covered && mine){
-			return 1;
+			return '1';
 		}
 		if(!covered && mine){
-			return 4;
+			return '4';
 		}
 		if(!covered && !mine){
-			return 5;
+			return '5';
 		}
-		return -1;
+		return '9';
 	}
 	
-	public String toSave(){
-		return x + " " + y + " " + mid();
+	public char toSave(){
+		return mid();
 	}
 	
 }

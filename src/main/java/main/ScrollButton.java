@@ -57,7 +57,7 @@ class ScrollButton {
 	
 	public void input(float rx, float ry, OpenBox parent){
 		if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
-			if(rx > x && rx < (x + 16*Main.UI_SCALE) && ry > y && ry < (y + 16*Main.UI_SCALE)){
+			if(rx > x*Main.UI_SCALE && rx < (x*Main.UI_SCALE + 16*Main.UI_SCALE) && ry > y*Main.UI_SCALE && ry < (y*Main.UI_SCALE + 16*Main.UI_SCALE)){
 				clicked = true;
 				if(!pressed){
 					if(direction == -1){

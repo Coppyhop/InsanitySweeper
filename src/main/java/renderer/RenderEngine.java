@@ -17,7 +17,7 @@ public class RenderEngine {
 	public static Texture interfaces;
 	private static Texture icons;
 	public static BitmapFont font;
-	private final String version = "0.0.5";
+	private final String version = "0.1.1";
 	private DialogBox dialog = null;
 	
 	public RenderEngine(String skinName){
