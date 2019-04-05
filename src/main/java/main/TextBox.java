@@ -18,7 +18,7 @@ public class TextBox {
 	boolean selected = false, pressed = false;
 	
 	public TextBox(float x, float y, float width){
-		height = 18;
+		height= 18;
 		this.width = width;
 		this.x = x;
 		this.y = y;
@@ -41,7 +41,7 @@ public class TextBox {
 			}
 		}
 		if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
-			if(rx > x && rx < (x + width) && ry > y && ry < (y + height)){
+			if(rx > x*Main.UI_SCALE && rx < (x*Main.UI_SCALE + width * Main.UI_SCALE) && ry > y*Main.UI_SCALE && ry < (y*Main.UI_SCALE + (height * Main.UI_SCALE))){
 				selected = true;
 			}  else {
 				selected = false;
@@ -53,30 +53,30 @@ public class TextBox {
 		GL11.glColor4f(0.2f, 0.2f, 0.2f, 1f);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(x, y);
-		GL11.glVertex2f(x, y+height);
-		GL11.glVertex2f(x+width, y+height);
-		GL11.glVertex2f(x+width, y);
+		RenderEngine.dsVertex2f(x, y);
+		RenderEngine.dsVertex2f(x, y+height);
+		RenderEngine.dsVertex2f(x+width, y+height);
+		RenderEngine.dsVertex2f(x+width, y);
 		GL11.glEnd();
 		GL11.glColor4f(1f, 1f, 1f, 1f);
 		BitmapString userInput = new BitmapString(Main.input, RenderEngine.font, 0.5f);
 		if(selected){
 			GL11.glBegin(GL11.GL_LINES);
-			GL11.glVertex2f(x, y);
-			GL11.glVertex2f(x, y+height);
-			GL11.glVertex2f(x+width, y+height);
-			GL11.glVertex2f(x+width, y);
-			GL11.glVertex2f(x, y);
-			GL11.glVertex2f(x+width, y);
-			GL11.glVertex2f(x, y+height);
-			GL11.glVertex2f(x+width, y+height);
-			if(GLFW.glfwGetTime() %2 > 1 && userInput.getWidth() < width){
-				GL11.glVertex2f(x+userInput.getWidth()+2, y+2);
-				GL11.glVertex2f(x+userInput.getWidth()+2, y+height-2);
+			RenderEngine.dsVertex2f(x, y);
+			RenderEngine.dsVertex2f(x, y+height);
+			RenderEngine.dsVertex2f(x+width, y+height);
+			RenderEngine.dsVertex2f(x+width, y);
+			RenderEngine.dsVertex2f(x, y);
+			RenderEngine.dsVertex2f(x+width, y);
+			RenderEngine.dsVertex2f(x, y+height);
+			RenderEngine.dsVertex2f(x+width, y+height);
+			if(GLFW.glfwGetTime() %2 > 1 && userInput.getStaticWidth() < width){
+				RenderEngine.dsVertex2f(x+userInput.getStaticWidth()+2, y+2);
+				RenderEngine.dsVertex2f(x+userInput.getStaticWidth()+2, y+height-2);
 			}
 			GL11.glEnd();
 		}
-		userInput.render(x+2, y+2);
+		userInput.render((x+2)*Main.UI_SCALE, (y+2)*Main.UI_SCALE);
 	}
 	
 }

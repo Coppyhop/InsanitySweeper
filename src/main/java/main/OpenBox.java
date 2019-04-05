@@ -20,7 +20,7 @@ public class OpenBox extends DialogBox{
 		super();
 		closeButton = new Button("Close",0,0);
 		closeButton.setX(-73);
-		closeButton.setY(100 - 20);
+		closeButton.setY(80);
 		openButton = new Button("Open",0,0){
 			@Override
 			public void click(DialogBox parent){
@@ -56,10 +56,10 @@ public class OpenBox extends DialogBox{
 				}
 			}
 		};
-		openButton.setX(75 -2 - openButton.getWidth());
-		openButton.setY(100-20);
+		openButton.setX(73 - openButton.getStaticWidth());
+		openButton.setY(80);
 		upButton = new ScrollButton(57,-82,-1);
-		downButton = new ScrollButton(57,78-16,1);
+		downButton = new ScrollButton(57,(78-16),1);
 	}
 	
 	public void update(){
@@ -69,7 +69,8 @@ public class OpenBox extends DialogBox{
 		files = new SingleTextSelectionElement[saves.length];
 		for (int i = 0; i < saves.length; i++) {
 			if (saves[i].isFile()) {
-		        files[i] = new SingleTextSelectionElement(-73, -82 + (16*i),128 ,
+		        files[i] = new SingleTextSelectionElement(-73*Main.UI_SCALE,
+						-82*Main.UI_SCALE + (16*i*Main.UI_SCALE),128*Main.UI_SCALE,
 						new BitmapString(saves[i].getName(), RenderEngine.font, 0.5f));
 			}
 		}
@@ -94,25 +95,25 @@ public class OpenBox extends DialogBox{
 	public void render() {
 		GL11.glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(-75, -100);
-		GL11.glVertex2f(-75, 100);
-		GL11.glVertex2f(75, 100);
-		GL11.glVertex2f(75, -100);
+		RenderEngine.dsVertex2f(-75, -100);
+		RenderEngine.dsVertex2f(-75, 100);
+		RenderEngine.dsVertex2f(75, 100);
+		RenderEngine.dsVertex2f(75, -100);
 		GL11.glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
-		GL11.glVertex2f(-75, -100);
-		GL11.glVertex2f(-75, -84);
-		GL11.glVertex2f(75, -84);
-		GL11.glVertex2f(75, -100);
+		RenderEngine.dsVertex2f(-75, -100);
+		RenderEngine.dsVertex2f(-75, -84);
+		RenderEngine.dsVertex2f(75, -84);
+		RenderEngine.dsVertex2f(75, -100);
 		GL11.glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
-		GL11.glVertex2f(-73, -82);
-		GL11.glVertex2f(-73, 78);
-		GL11.glVertex2f(55, 78);
-		GL11.glVertex2f(55, -82);
+		RenderEngine.dsVertex2f(-73, -82);
+		RenderEngine.dsVertex2f(-73, 78);
+		RenderEngine.dsVertex2f(55, 78);
+		RenderEngine.dsVertex2f(55, -82);
 		GL11.glColor4f(0.2f, 0.2f, 0.2f, 1.0f);
-		GL11.glVertex2f(57, -82);
-		GL11.glVertex2f(57, 78);
-		GL11.glVertex2f(57+16, 78);
-		GL11.glVertex2f(57+16, -82);
+		RenderEngine.dsVertex2f(57, -82);
+		RenderEngine.dsVertex2f(57, 78);
+		RenderEngine.dsVertex2f(57+16, 78);
+		RenderEngine.dsVertex2f(57+16, -82);
 		GL11.glEnd();
 		GL11.glColor4f(1f, 1f, 1f, 1.0f);
 		for(int i=offset;i<files.length;i++){
@@ -122,7 +123,7 @@ public class OpenBox extends DialogBox{
 		}
 		GL11.glColor4f(1f, 1f, 1f, 1.0f);
 		BitmapString test = new BitmapString("Open Game", RenderEngine.font, 0.5f);
-		test.render(-test.getWidth()/2, -100);
+		test.render(-test.getWidth()/2, -100*Main.UI_SCALE);
 		GL11.glColor4f(1f, 1f, 1f, 1.0f);
 		closeButton.render();
 		upButton.render();

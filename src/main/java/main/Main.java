@@ -22,6 +22,7 @@ public class Main {
 	float viewx = 0, viewy = 0, smoothx = 0, smoothy =0;
 	static int width=1024, height=768, mapheight = 1600, mapwidth = 3000, nummines = 999999;
 	float delta, lastFrame, lastFPS, FPS;
+	public static float UI_SCALE = 2f, GAME_SCALE = 1.5f;
 	int fps = 0, selicon = -1;
 	static float mousex =0, mousey =0;
 	public static boolean dialog = false;
@@ -39,7 +40,7 @@ public class Main {
 	//Options
 	boolean smoothScroll = true, useModern = false, useVsync = false, safeMode = false;
 	//Use Modern means "use VBOs", not implemented yet
-	float smoothFriction = 0.8f; //Friction of the smooth scrolling
+	float smoothFriction = 0.75f; //Friction of the smooth scrolling
 	
 	public Main(){
 		GLFWErrorCallback.createPrint(System.err).set();
@@ -159,25 +160,25 @@ public class Main {
 				}
 			}
 			if(smoothScroll){
-				viewx += smoothx;
-				viewy += smoothy;
+				viewx += smoothx*GAME_SCALE;
+				viewy += smoothy*GAME_SCALE;
 				smoothx*=smoothFriction;
 				smoothy*=smoothFriction;
 			}
-			if(viewx >= 16){
-				viewx = 16;
+			if(viewx >= 64*GAME_SCALE){
+				viewx = 64*GAME_SCALE;
 			}
-			if(viewx <= -(map.getMap().length*16) + width -16){
-				viewx = -(map.getMap().length*16) + width -16;
+			if(viewx <= -(map.getMap().length*16*GAME_SCALE) + width -64*GAME_SCALE){
+				viewx = -(map.getMap().length*16*GAME_SCALE) + width -64*GAME_SCALE;
 			}
-			if(viewy <= -(map.getMap()[0].length*16) + height -16){
-				viewy = -(map.getMap()[0].length*16) + height -16;
+			if(viewy <= -(map.getMap()[0].length*16*GAME_SCALE) + height -64*GAME_SCALE){
+				viewy = -(map.getMap()[0].length*16*GAME_SCALE) + height -64*GAME_SCALE;
 			}
-			if(viewy >= 16){
-				viewy =16;
+			if(viewy >= 64*GAME_SCALE){
+				viewy =64*GAME_SCALE;
 			}
 			Tile[][] tiles = map.getMap();
-			float squaresize = 16;
+			float squaresize = 16*GAME_SCALE;
 			float minx = (float) -Math.ceil(viewx/squaresize)-1;
 			float miny = (float) -Math.ceil(viewy/squaresize)-1;
 			float maxx = (float) Math.ceil((-viewx/squaresize)+ (width/squaresize));
@@ -211,33 +212,33 @@ public class Main {
 		
 		if(glfwGetKey(window, GLFW_KEY_A) == 1){
 			if(!smoothScroll){
-				viewx += 480 * delta;
+				viewx += (480 / GAME_SCALE) * delta;
 			} else {
-				smoothx = 480 * delta;
+				smoothx = (480 / GAME_SCALE) * delta;
 			}
 		}
 		
 		if(glfwGetKey(window, GLFW_KEY_D) == 1){
 			if(!smoothScroll){
-				viewx -= 480 * delta;
+				viewx -= (480 / GAME_SCALE) * delta;
 			} else {
-				smoothx = -480 * delta;
+				smoothx = -(480 / GAME_SCALE) * delta;
 			}
 		}
 		
 		if(glfwGetKey(window, GLFW_KEY_W) == 1){
 			if(!smoothScroll){
-				viewy += 480 * delta;
+				viewy += (480 / GAME_SCALE) * delta;
 			} else {
-				smoothy = 480 * delta;
+				smoothy = (480 / GAME_SCALE) * delta;
 			}
 		}
 		
 		if(glfwGetKey(window, GLFW_KEY_S) == 1){
 			if(!smoothScroll){
-				viewy -= 480 * delta;
+				viewy -= (480 / GAME_SCALE) * delta;
 			} else {
-				smoothy = -480 * delta;
+				smoothy = -(480 / GAME_SCALE) * delta;
 			}
 		}
 
@@ -250,9 +251,9 @@ public class Main {
 			refreshed = false;
 		}
 		
-		if(mousex < width - 16 && mousey < height -48){
-			int tilex = (int) Math.floor((-viewx + mousex))/16;
-			int tiley = (int) Math.floor((-viewy + mousey))/16;
+		if(mousex < width - 16*UI_SCALE && mousey < height -48*UI_SCALE){
+			int tilex = (int) (Math.floor((-viewx + mousex))/(16*GAME_SCALE));
+			int tiley = (int) (Math.floor((-viewy + mousey))/(16*GAME_SCALE));
 			if(!opressed){
 				if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 1){
 					map.setHovered(tilex, tiley);
@@ -303,15 +304,15 @@ public class Main {
 					dialog = true;
 				}
 			}
-			if(mousey < height -16){
+			if(mousey < height -16*UI_SCALE){
 				if(!opressed){
-					if(mousex > 0 && mousex < 32){
+					if(mousex > 0 && mousex < 32*UI_SCALE){
 						selicon = 0;
-					} else if(mousex > 32 && mousex < 64){
+					} else if(mousex > 32*UI_SCALE && mousex < 64*UI_SCALE){
 						selicon = 1;
-					}  else if(mousex > 64 && mousex < 96){
+					}  else if(mousex > 64*UI_SCALE && mousex < 96*UI_SCALE){
 						selicon = 2;
-					} else if(mousex > 96 && mousex < 128){
+					} else if(mousex > 96*UI_SCALE && mousex < 128*UI_SCALE){
 						selicon = 3;
 					} else {
 						selicon = -1;
@@ -320,8 +321,8 @@ public class Main {
 			} else {
 				selicon = -1;
 			}
-			if(mousex > width -16){
-				if(mapheight * 16 > height){
+			if(mousex > width -16*UI_SCALE){
+				if(mapheight * 16*GAME_SCALE > height){
 					if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 1){
 						if(!hgrabbed && !opressed){
 						vgrabbed = true;
@@ -330,8 +331,8 @@ public class Main {
 					}
 				}
 			}
-			if(mapwidth * 16 > width){
-				if(mousey > height -16){
+			if(mapwidth * 16*GAME_SCALE > width){
+				if(mousey > height -16*UI_SCALE){
 					if(glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_1) == 1){
 						if(!vgrabbed && !opressed){
 							hgrabbed = true;
@@ -342,13 +343,13 @@ public class Main {
 			}
 		}
 		if(hgrabbed){
-		    float totalpixelshigh = (mapwidth * 16 + 32) - width;
-		    totalpixelshigh = totalpixelshigh/(width-16);
+		    float totalpixelshigh = (mapwidth * 16 *GAME_SCALE + 32*GAME_SCALE) - width;
+		    totalpixelshigh = totalpixelshigh/(width-16*GAME_SCALE);
 		    float y = (mousex)*(totalpixelshigh);
 		    viewx = -y;
 		}
 		if(vgrabbed){
-		    float totalpixelshigh = (mapheight * 16 + 32) - height;
+		    float totalpixelshigh = (mapheight * 16*GAME_SCALE + 32*GAME_SCALE) - height;
 		    totalpixelshigh = totalpixelshigh/height;
 		    float y = (mousey)*(totalpixelshigh);
 		    viewy = -y;

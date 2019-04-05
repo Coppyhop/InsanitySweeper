@@ -11,9 +11,9 @@ public class SingleTextSelectionElement {
 	
 	BitmapString text;
 	boolean selected;
-	int x, y, width;
+	float x, y, width;
 	
-	public SingleTextSelectionElement(int x, int y, int width, BitmapString text){
+	public SingleTextSelectionElement(float x, float y, float width, BitmapString text){
 		this.text = text;
 		this.x = x;
 		this.y = y;

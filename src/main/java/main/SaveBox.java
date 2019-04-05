@@ -20,8 +20,8 @@ public class SaveBox extends DialogBox{
 				Main.dialog = false;
 			}
 		};
-		closeButton.setX(75 - closeButton.getWidth() -2);
-		closeButton.setY(29 - 20);
+		closeButton.setX(74 - closeButton.getStaticWidth());
+		closeButton.setY(9);
 		saveButton = new Button ("Save",0,0){
 			@Override
 			public void click(DialogBox parent){
@@ -41,9 +41,9 @@ public class SaveBox extends DialogBox{
 				Main.dialog = false;
 			}
 		};
-		saveButton.setX(75 - saveButton.getWidth() - 2);
-		saveButton.setY(5-16);
-		filename = new TextBox(-73, 5-16, 144 - saveButton.getWidth());
+		saveButton.setX(74 - saveButton.getStaticWidth());
+		saveButton.setY(-11);
+		filename = new TextBox(-73, -11, 144 - saveButton.getStaticWidth());
 	}
 	@Override
 	public void input(int width, int height) {
@@ -58,19 +58,19 @@ public class SaveBox extends DialogBox{
 	public void render() {
 		GL11.glColor4f(0.3f, 0.3f, 0.3f, 1.0f);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(-75, -29);
-		GL11.glVertex2f(-75, 29);
-		GL11.glVertex2f(75, 29);
-		GL11.glVertex2f(75, -29);
+		RenderEngine.dsVertex2f(-75, -29);
+		RenderEngine.dsVertex2f(-75, 29);
+		RenderEngine.dsVertex2f(75, 29);
+		RenderEngine.dsVertex2f(75, -29);
 		GL11.glColor4f(0.1f, 0.1f, 0.1f, 1.0f);
-		GL11.glVertex2f(-75, -29);
-		GL11.glVertex2f(-75, -13);
-		GL11.glVertex2f(75, -13);
-		GL11.glVertex2f(75, -29);
+		RenderEngine.dsVertex2f(-75, -29);
+		RenderEngine.dsVertex2f(-75, -13);
+		RenderEngine.dsVertex2f(75, -13);
+		RenderEngine.dsVertex2f(75, -29);
 		GL11.glEnd();
 		GL11.glColor4f(1f, 1f, 1f, 1.0f);
 		BitmapString test = new BitmapString("Save Game", RenderEngine.font, 0.5f);
-		test.render(-test.getWidth()/2, -27);
+		test.render(-test.getWidth()/2, -27*Main.UI_SCALE);
 		closeButton.render();
 		saveButton.render();
 		filename.render();

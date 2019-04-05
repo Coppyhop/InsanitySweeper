@@ -8,12 +8,12 @@ import renderer.RenderEngine;
 
 public class ScrollButton {
 
-	int x, y, direction;
+	float x, y, direction;
 	float textIndex = 5;
 	boolean clicked, pressed;
 	float textSpace = 0.16666666666f;
 	
-	public ScrollButton(int x, int y, int direction){
+	public ScrollButton(float x, float y, int direction){
 		this.x = x;
 		this.y = y;
 		this.direction = direction;
@@ -42,19 +42,19 @@ public class ScrollButton {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, RenderEngine.interfaces.getID());
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glTexCoord2d(0, textIndex * textSpace);
-		GL11.glVertex2f(x, y);
+		RenderEngine.dsVertex2f(x, y);
 		GL11.glTexCoord2d(0, (textIndex +1) * textSpace);
-		GL11.glVertex2f(x, y+16);
+		RenderEngine.dsVertex2f(x, y+16);
 		GL11.glTexCoord2d(1, (textIndex+1)*textSpace);
-		GL11.glVertex2f(x+16, y+16);
+		RenderEngine.dsVertex2f(x+16, y+16);
 		GL11.glTexCoord2d(1, textIndex * textSpace);
-		GL11.glVertex2f(x+16, y);
+		RenderEngine.dsVertex2f(x+16, y);
 		GL11.glEnd();
 	}
 	
 	public void input(float rx, float ry, OpenBox parent){
 		if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
-			if(rx > x && rx < (x + 16) && ry > y && ry < (y + 16)){
+			if(rx > x && rx < (x + 16*Main.UI_SCALE) && ry > y && ry < (y + 16*Main.UI_SCALE)){
 				clicked = true;
 				if(!pressed){
 					if(direction == -1){

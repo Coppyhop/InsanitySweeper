@@ -3,6 +3,7 @@ package renderer;
 import java.util.ArrayList;
 
 import org.lwjgl.opengl.GL11;
+import main.Main;
 
 public class BitmapString {
 	
@@ -41,13 +42,13 @@ public class BitmapString {
 			float u2 = (g.getX() + g.getWidth()) / font.getTextureWidth();
 			float v2 = (g.getY() + g.getHeight()) / font.getTextureHeight();
 			GL11.glTexCoord2f(u, v);
-		    GL11.glVertex2f(curx * scale, g.getYoffset() * scale);
+		    GL11.glVertex2f(curx * (scale * Main.UI_SCALE), g.getYoffset() * (scale * Main.UI_SCALE));
 		    GL11.glTexCoord2f(u2, v);
-		    GL11.glVertex2f((curx + g.getWidth())*scale, g.getYoffset()*scale);
+		    GL11.glVertex2f((curx + g.getWidth())*(scale * Main.UI_SCALE), g.getYoffset()*(scale * Main.UI_SCALE));
 		    GL11.glTexCoord2f(u2, v2);
-		    GL11.glVertex2f((curx + g.getWidth())*scale,(g.getYoffset() + g.getHeight())*scale);
+		    GL11.glVertex2f((curx + g.getWidth())*(scale * Main.UI_SCALE),(g.getYoffset() + g.getHeight())*(scale * Main.UI_SCALE));
 		    GL11.glTexCoord2f(u,v2);
-		    GL11.glVertex2f(curx*scale, (g.getYoffset() + g.getHeight())*scale);
+		    GL11.glVertex2f(curx*(scale * Main.UI_SCALE), (g.getYoffset() + g.getHeight())*(scale * Main.UI_SCALE));
 		    curx+= g.getXadvance();
 		}
 		GL11.glEnd();
@@ -60,7 +61,20 @@ public class BitmapString {
 			x+=s.getXoffset();
 			x+=s.getXadvance();
 		}
+		return x * scale * Main.UI_SCALE;
+	}
+
+	public float getStaticWidth(){
+		int x = 0;
+		for(BitmapGlyph s: string){
+			x+=s.getXoffset();
+			x+=s.getXadvance();
+		}
 		return x * scale;
+	}
+
+	public float getHeight(){
+		return 18 * Main.UI_SCALE;
 	}
 
 }

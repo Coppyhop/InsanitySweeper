@@ -8,12 +8,12 @@ import renderer.RenderEngine;
 public class Button {
 
 	BitmapString text;
-	boolean hovered = true;
+	boolean hovered = true, clicked = false;
 	float x, y;
 	float width, height = 18;
 	
 	public void input(float rx, float ry, DialogBox parent){
-		if(rx > x && rx < (x + width) && ry > y && ry < (y + height)){
+		if(rx > x*Main.UI_SCALE && rx < (x*Main.UI_SCALE + width) && ry > y*Main.UI_SCALE && ry < (y*Main.UI_SCALE + height*Main.UI_SCALE)){
 			hovered = true;
 		} else {
 			hovered = false;
@@ -21,9 +21,14 @@ public class Button {
         if(glfwGetMouseButton(Main.window, GLFW_MOUSE_BUTTON_1) == 1){
             if(hovered){
                 Main.opressed = true;
-		        click(parent);
+                if(clicked == false) {
+					click(parent);
+					clicked = true;
+				}
             }
-        }
+        } else {
+        	clicked = false;
+		}
 	}
 	
 	public void click(DialogBox parent){
@@ -31,12 +36,13 @@ public class Button {
 			Main.dialog = false;
 	}
 	
-	public Button(String text, int x, int y){
+	public Button(String text, float x, float y){
 		this.text = new BitmapString(text, RenderEngine.font, 0.5f);
 		this.width = this.text.getWidth() + 2;
 	}
 	
 	public void render(){
+		this.width = this.text.getWidth() + 2;
 		if(!hovered){
 		    GL11.glColor4f(0.8f, 0.8f, 0.8f, 1f);
 		} else {
@@ -44,13 +50,13 @@ public class Button {
 		}
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
 		GL11.glBegin(GL11.GL_QUADS);
-		GL11.glVertex2f(x, y);
-		GL11.glVertex2f(x, y+height);
-		GL11.glVertex2f(x+width, y+height);
-		GL11.glVertex2f(x+width, y);
+		GL11.glVertex2f(x*Main.UI_SCALE, y*Main.UI_SCALE);
+		GL11.glVertex2f(x*Main.UI_SCALE, y*Main.UI_SCALE+height*Main.UI_SCALE);
+		GL11.glVertex2f(x*Main.UI_SCALE+width, y*Main.UI_SCALE+height*Main.UI_SCALE);
+		GL11.glVertex2f(x*Main.UI_SCALE+width, y*Main.UI_SCALE);
 		GL11.glEnd();
 		GL11.glColor4f(0, 0, 0, 1f);
-		text.render(x+1, y+1);
+		text.render(x*Main.UI_SCALE+Main.UI_SCALE, y*Main.UI_SCALE+Main.UI_SCALE);
 	}
 
 	public float getX() {
@@ -71,6 +77,10 @@ public class Button {
 
 	public float getWidth() {
 		return width;
+	}
+
+	public float getStaticWidth() {
+		return (this.text.getWidth()/Main.UI_SCALE) + 2;
 	}
 
 }
