@@ -1,6 +1,4 @@
 # InsanitySweeper
 A Minesweeper Game Designed for Large Boards and Multiplayer Play
 
-I'm back working on this project, in another branch. This is the last of the "Alpha" builds. The game is now in
-a playable enough state to be moved into beta. Alpha supports UI Scaling, Optimized Saving, and some bugfixes from the
-original release. Keep a Look out for the first beta uploads, as those will include a UI and Rendering overhaul.
+This is a pull from masater of the last alpha build. As I plan on re-working the render engine completely in the future to use OpenGL 3.3+, it seemed logical to put the OpenGL 1.1 Stuff in its own branch. This is for the people still stuck in the past, wasn't OpenGL 1.1 deprecated a really long time ago? OpenGL 3.3 Hardwares like 10 years old Upgrade damnit! This branch will not be updated at all, the new UI enchancements, Rendering Optimizations, and Gameplay changes will not come to this branch.
