@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 public class BitmapFont {
 
-	float textureWidth, textureHeight, glyphSize;
-	Texture fontTexture;
-	ArrayList<BitmapGlyph> glyphs;
+	private final float textureWidth;
+    private final float textureHeight;
+    private final float glyphSize;
+	private final Texture fontTexture;
+	private final ArrayList<BitmapGlyph> glyphs;
 	
-	public BitmapFont(float textureWidth, float textureHeight, float glyphSize, Texture fontTexture, ArrayList<BitmapGlyph> glyphs) {
+	public BitmapFont(float textureWidth, float textureHeight, float glyphSize, Texture fontTexture,
+					  ArrayList<BitmapGlyph> glyphs) {
 		super();
 		this.textureWidth = textureWidth;
 		this.textureHeight = textureHeight;
@@ -36,6 +39,5 @@ public class BitmapFont {
 	public float getGlyphSize(){
 		return glyphSize;
 	}
-	
 	
 }

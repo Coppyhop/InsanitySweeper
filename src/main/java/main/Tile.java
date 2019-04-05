@@ -14,41 +14,35 @@ public class Tile {
 		numMines = 0;
 	}
 	
-	public Tile(int x, int y, int mid){
+	public Tile(int x, int y, char mid){
 		this.x = x;
 		this.y = y;
-		
-		if(mid ==0){
+		if(mid =='0'){
 			covered = true;
 			mine = false;
 		}
-		if(mid == 1){
+		if(mid == '1'){
 			covered = true;
 			mine = true;
 		}
-		
-		if(mid == 2){
+		if(mid == '2'){
 			covered = true;
 			flagged = true;
 			mine = true;
 		}
-		
-		if(mid == 3){
+		if(mid == '3'){
 			covered = true;
 			flagged = true;
 			mine = true;
 		}
-		
-		if(mid == 4){
+		if(mid == '4'){
 			covered = false;
 			mine = true;
 		}
-		
-		if(mid == 5){
+		if(mid == '5'){
 			covered = false;
 			mine = false;
 		}
-		
 		if(!covered){
 			hovered = false;
 			hoverable = false;
@@ -76,28 +70,25 @@ public class Tile {
 
 	public void setHovered(boolean hovered) {
 		if(hoverable && !flagged){
-		this.hovered = hovered;
+			this.hovered = hovered;
 		}
 	}
 	
 	public void setHoverable(){
 		if(hoverable && !flagged){
-		this.hoverable = false;
-		this.hovered = false;
-		this.covered = false;
-		
-		if(numMines == 0 && !mine){
-		TileMap.murrclick(x, y);
-		}
+			this.hoverable = false;
+			this.hovered = false;
+			this.covered = false;
+			if(numMines == 0 && !mine){
+				TileMap.needUpdates.add(this);
+			}
 		}
 	}
 	
 	public void chord(){
-		
 		if(TileMap.checkFlags(x, y) == numMines){
 			TileMap.murrclick(x, y);
 		}
-		
 	}
 
 	public void setMine(boolean mine) {
@@ -110,11 +101,7 @@ public class Tile {
 	
 	public void toggleFlag(){
 		if(covered){
-		if(flagged){
-			flagged = false;
-		} else {
-			flagged = true;
-		}
+			flagged = !flagged;
 		}
 	}
 	
@@ -134,38 +121,30 @@ public class Tile {
 		}
 	}
 	
-	public int mid(){
+	private char mid(){
 		if(covered && flagged &&!mine){
-			return 2;
+			return '2';
 		}
-		
 		if(covered && flagged && mine){
-			return 3;
+			return '3';
 		}
-		
-		
 		if(covered && !mine){
-			return 0;
+			return '0';
 		}
 		if(covered && mine){
-			return 1;
+			return '1';
 		}
-		
-
 		if(!covered && mine){
-			return 4;
+			return '4';
 		}
-		
 		if(!covered && !mine){
-			return 5;
+			return '5';
 		}
-		
-		return -1;
+		return '9';
 	}
 	
-	public String toSave(){
-		//return "xpos=" + x + " ypos="+y+" nummines="+numMines+" ismine="+mine+" iscovered=" +covered + " isflagged=" + flagged + " ishoverable=" + hoverable;
-		return x + " " + y + " " + mid();
+	public char toSave(){
+		return mid();
 	}
 	
 }
