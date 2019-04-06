@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import com.kjbre.insanity.main.DialogBox;
 import com.kjbre.insanity.main.Main;
 import com.kjbre.insanity.main.Tile;
 
-import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 
 public class RenderEngine {
 	
@@ -20,9 +20,11 @@ public class RenderEngine {
 	private static Texture icons;
 	public static BitmapFont font;
 	private final String version = "0.1.1";
-	private DialogBox dialog = null;
+	private int width, height;
 	
 	public RenderEngine(String skinName, int width, int height){
+		this.width = width;
+		this.height = height;
 		Loader loader = new Loader();
 		interfaces = loader.loadTexture("data/skins/" + skinName + "_interface.png");
 		minesweeper = loader.loadTexture("data/skins/" + skinName + "_minefield.png");
@@ -42,7 +44,12 @@ public class RenderEngine {
 		GL11.glTranslatef(-width/2, -height/2, 0);
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	}
-	
+
+	public void prepareRender(){
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	}
+
+	//Could use some more work but not the focus currently
 	public void renderTiles(float offsetx, float offsety){
 		GL11.glPushMatrix();
 		GL11.glTranslatef(offsetx, offsety, 0);
@@ -56,13 +63,13 @@ public class RenderEngine {
 			if(t.isFlagged()) tid = 12;
 			if(t.isHovered()) tid = 11;
 			GL11.glTexCoord2f(0, (0.076923076923f * tid));
-			GL11.glVertex2f(t.x*16*Main.GAME_SCALE, t.y*16*Main.GAME_SCALE);
+			gmVertex2f(t.x*16, t.y*16);
 			GL11.glTexCoord2f(1, (0.076923076923f * tid));
-			GL11.glVertex2f(t.x*16*Main.GAME_SCALE+16*Main.GAME_SCALE, t.y*16*Main.GAME_SCALE);
+			gmVertex2f(t.x*16+16, t.y*16);
 			GL11.glTexCoord2f(1, 0.076923076923f+ (0.076923076923f * tid));
-			GL11.glVertex2f(t.x*16*Main.GAME_SCALE+16*Main.GAME_SCALE,t.y*16*Main.GAME_SCALE+16*Main.GAME_SCALE);
+			gmVertex2f(t.x*16+16,t.y*16+16);
 			GL11.glTexCoord2f(0, 0.076923076923f + (0.076923076923f * tid));
-			GL11.glVertex2f(t.x*16*Main.GAME_SCALE, t.y*16*Main.GAME_SCALE+16*Main.GAME_SCALE);
+			gmVertex2f(t.x*16, t.y*16+16);
 		}
 		GL11.glEnd();
 		GL11.glPopMatrix();
@@ -73,9 +80,8 @@ public class RenderEngine {
 		GL11.glVertex2f(x * Main.UI_SCALE, y * Main.UI_SCALE);
 	}
 
-	
-	public void setDialog(DialogBox dialog){
-		this.dialog = dialog;
+	public static void gmVertex2f(float x, float y){
+		GL11.glVertex2f(x * Main.GAME_SCALE, y * Main.GAME_SCALE);
 	}
 	
 	public void processTile(Tile tile){

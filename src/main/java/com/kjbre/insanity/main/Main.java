@@ -38,10 +38,6 @@ public class Main {
 	static float mousex =0, mousey =0;
 	public static boolean dialog = false;
 	private RenderEngine renderer;
-	private OpenBox open;
-	private SaveBox save;
-	private NewBox newbox;
-	private SettingsBox settings;
 	public static String input="";
 	public static long window;
 	static TileMap map;
@@ -106,14 +102,9 @@ public class Main {
 		map = new TileMap(mapwidth,mapheight,nummines);
 
 		//TODO Rework the GUI System into one with greater flexibility
-		open = new OpenBox();
-		save = new SaveBox();
-		settings = new SettingsBox();
-		newbox = new NewBox();
 
 		while (!WindowManager.shouldWindowClose(window)) {
 			//TODO All GL Calls should only Occur in the RenderEngine.
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			float time = (float) GLFW.glfwGetTime();
 			delta = time - lastFrame;
 			lastFrame = time;
@@ -161,7 +152,7 @@ public class Main {
 					}
 				}
 			}
-
+            renderer.prepareRender();
 			//TODO: Make GUI.render call after this
 			renderer.renderTiles(viewx, viewy);
 			WindowManager.update(window);
