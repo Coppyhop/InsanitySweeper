@@ -8,6 +8,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 import java.nio.IntBuffer;
 
+import com.kjbre.insanity.GuiRenderer;
+import com.kjbre.insanity.renderer.Loader;
 import com.kjbre.insanity.renderer.WindowManager;
 import com.sun.javaws.WinOperaSupport;
 import org.lwjgl.glfw.*;
@@ -23,16 +25,16 @@ public class Main {
 	private float viewy = 0;
 	private float smoothx = 0;
 	private float smoothy =0;
-	private static int width=1024;
-	private static int height=768;
+	private static int width=1280;
+	private static int height=720;
 	private static final int mapheight = 1600;
 	private static final int mapwidth = 3000;
-	private static final int nummines = 99999;
+	private static final int nummines = 500000;
 	private float delta;
 	private float lastFrame;
 	private float lastFPS;
 	private float FPS;
-	public static float UI_SCALE = 2f, GAME_SCALE = 1.5f;
+	public static float UI_SCALE = 2f, GAME_SCALE = 2.0f;
 	private int fps = 0;
 	private int selicon = -1;
 	static float mousex =0, mousey =0;
@@ -52,7 +54,7 @@ public class Main {
 	
 	private Main(){
 		WindowManager.init();
-		window = WindowManager.createWindow(1024,768, "Insanity Sweeper", false);
+		window = WindowManager.createWindow(width,height, "Insanity Sweeper", false);
 
 		//TODO: Make this into an input Class
 		GLFWWindowSizeCallback windowSizeCallback;
@@ -103,6 +105,7 @@ public class Main {
 
 		//TODO Rework the GUI System into one with greater flexibility
 
+		GuiRenderer guiRenderer = new GuiRenderer(new Loader());
 		while (!WindowManager.shouldWindowClose(window)) {
 			//TODO All GL Calls should only Occur in the RenderEngine.
 			float time = (float) GLFW.glfwGetTime();
@@ -155,6 +158,7 @@ public class Main {
             renderer.prepareRender();
 			//TODO: Make GUI.render call after this
 			renderer.renderTiles(viewx, viewy);
+			guiRenderer.renderGui(renderer, String.valueOf(fps), renderer.minesweeper);
 			WindowManager.update(window);
 		}
 		WindowManager.destroyWindow(window);

@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
 
-class Loader {
+public class Loader {
 
 	public Texture loadTexture(String filename){
 		ByteBuffer buf = null;

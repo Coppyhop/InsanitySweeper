@@ -15,7 +15,7 @@ public class RenderEngine {
 	
 	
 	private final List<Tile> tiles = new ArrayList<>();
-	private static Texture minesweeper;
+	public static Texture minesweeper;
 	public static Texture interfaces;
 	private static Texture icons;
 	public static BitmapFont font;
@@ -54,34 +54,57 @@ public class RenderEngine {
 		GL11.glPushMatrix();
 		GL11.glTranslatef(offsetx, offsety, 0);
 		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, minesweeper.getID());
-		GL11.glBegin(GL11.GL_QUADS);
+		setTexture(minesweeper);
 		for(Tile t:tiles){
 			float tid = t.getNumMines();
 			if(t.isMine()) tid = 9;
 			if(t.isCovered()) tid = 10;
 			if(t.isFlagged()) tid = 12;
 			if(t.isHovered()) tid = 11;
-			GL11.glTexCoord2f(0, (0.076923076923f * tid));
-			gmVertex2f(t.x*16, t.y*16);
-			GL11.glTexCoord2f(1, (0.076923076923f * tid));
-			gmVertex2f(t.x*16+16, t.y*16);
-			GL11.glTexCoord2f(1, 0.076923076923f+ (0.076923076923f * tid));
-			gmVertex2f(t.x*16+16,t.y*16+16);
-			GL11.glTexCoord2f(0, 0.076923076923f + (0.076923076923f * tid));
-			gmVertex2f(t.x*16, t.y*16+16);
+			float vScale = 1f/13f;
+			drawRectangle(t.x*16,t.y*16,16, 16, 0, vScale*tid, 1,vScale+(vScale*tid), Main.GAME_SCALE);
+
 		}
-		GL11.glEnd();
 		GL11.glPopMatrix();
 		tiles.clear();
 	}
 
-	public static void dsVertex2f(float x, float y){
-		GL11.glVertex2f(x * Main.UI_SCALE, y * Main.UI_SCALE);
+	public void setTexture(Texture texture){
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
 	}
 
-	public static void gmVertex2f(float x, float y){
-		GL11.glVertex2f(x * Main.GAME_SCALE, y * Main.GAME_SCALE);
+	public void setTexture(int texture){
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+	}
+
+	public void setColor(float r, float g, float b, float a){
+		GL11.glColor4f(r,g,b,a);
+	}
+
+	public void drawRectangle(float x, float y, float width, float height, float scale){
+		GL11.glBegin(GL_QUADS);
+		GL11.glTexCoord2f(0, 0);
+		GL11.glVertex2f(x*scale, y*scale);
+		GL11.glTexCoord2f(1, 0);
+		GL11.glVertex2f((x+width)*scale, y*scale);
+		GL11.glTexCoord2f(1, 1);
+		GL11.glVertex2f((x+width)*scale,(y+height)*scale);
+		GL11.glTexCoord2f(0, 1);
+		GL11.glVertex2f(x*scale, (y+height)*scale);
+		GL11.glEnd();
+	}
+
+	public void drawRectangle(float x, float y, float width, float height, float u1, float v1, float u2, float v2, float scale){
+		GL11.glBegin(GL_QUADS);
+		GL11.glTexCoord2f(u1, v1);
+		GL11.glVertex2f(x*scale, y*scale);
+		GL11.glTexCoord2f(u2, v1);
+		GL11.glVertex2f((x+width)*scale, y*scale);
+		GL11.glTexCoord2f(u2, v2);
+		GL11.glVertex2f((x+width)*scale,(y+height)*scale);
+		GL11.glTexCoord2f(u1, v2);
+		GL11.glVertex2f(x*scale, (y+height)*scale);
+		GL11.glEnd();
 	}
 	
 	public void processTile(Tile tile){
