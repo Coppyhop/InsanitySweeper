@@ -19,9 +19,9 @@ public class Main {
 	private float smoothy =0;
 	private static int width=1600;
 	private static int height=900;
-	private static final int mapheight = 30;
-	private static final int mapwidth = 60;
-	private static final int nummines = 10;
+	private static final int mapheight = 900;
+	private static final int mapwidth = 1600;
+	private static final int nummines = 288000;
 	private float delta;
 	private float lastFrame;
 	private float lastFPS;
