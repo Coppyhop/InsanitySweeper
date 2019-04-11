@@ -24,7 +24,7 @@ public class WindowManager {
     public static long createWindow(int width, int height, String title, boolean vSync){
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
         glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
         long window = glfwCreateWindow(width, height, title, NULL, NULL);
         if ( window == NULL )

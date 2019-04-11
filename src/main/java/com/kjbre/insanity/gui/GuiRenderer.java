@@ -17,7 +17,14 @@ public class GuiRenderer {
         guiButtons = loader.loadTexture("data/skins/default_interface.png");
     }
 
-    public void renderGui(RenderEngine renderer, String fps, Texture testTexture){
+    public void preRender(RenderEngine renderer){
+        float tileX = (renderer.getWidth()-(32))/(16*Main.UI_SCALE);
+        float tileY = (renderer.getHeight()-(mainFont.getGlyphSize()+8)*2-32)/(16*Main.UI_SCALE);
+        renderer.setColor(0.4f,0.4f,0.4f, 1f);
+        renderer.setTexture(guiTexture);
+        renderer.drawRectangle(4,(mainFont.getGlyphSize()+8)*2+4, renderer.getWidth()-(32), renderer.getHeight()-(mainFont.getGlyphSize()+8)*2-32, 0, 0, tileX*2, tileY*2, Main.UI_SCALE);
+    }
+    public void renderGui(RenderEngine renderer, String fps){
         BitmapString fpsString = new BitmapString("FPS: " + fps, mainFont);
         BitmapString titleString = new BitmapString("Insanity Sweeper", mainFont);
         BitmapString guiPOCString = new BitmapString("Game  Edit  Help", mainFont);

@@ -17,16 +17,16 @@ public class Main {
 	private float viewy = 0;
 	private float smoothx = 0;
 	private float smoothy =0;
-	private static int width=1280;
-	private static int height=720;
-	private static final int mapheight = 1600;
-	private static final int mapwidth = 3000;
-	private static final int nummines = 500000;
+	private static int width=1600;
+	private static int height=900;
+	private static final int mapheight = 30;
+	private static final int mapwidth = 60;
+	private static final int nummines = 10;
 	private float delta;
 	private float lastFrame;
 	private float lastFPS;
 	private float FPS;
-	public static float UI_SCALE = 2f, GAME_SCALE = 1.5f;
+	public static float UI_SCALE = 2f, GAME_SCALE = 2f;
 	private int fps = 0;
 	private int selicon = -1;
 	static float mousex =0, mousey =0;
@@ -49,25 +49,6 @@ public class Main {
 		window = WindowManager.createWindow(width,height, "Insanity Sweeper", false);
 
 		//TODO: Make this into an input Class
-		GLFWWindowSizeCallback windowSizeCallback;
-		glfwSetWindowSizeCallback(window, windowSizeCallback = new GLFWWindowSizeCallback(){
-            @Override
-            public void invoke(long window, int width, int height){
-            	int ow = Main.width, oh = Main.height;
-                Main.width = width;
-                Main.height = height;
-                int cw = Main.width - ow;
-                int ch = Main.height - oh;
-                cw/=2;
-                ch/=2;
-                glViewport(0, 0, width, height);
-        		GL11.glMatrixMode(GL11.GL_PROJECTION);
-        		GL11.glLoadIdentity();
-        		GL11.glOrtho(0, width, height, 0, 1, -1);
-        		viewx=viewx + cw;
-        		viewy=viewy + ch;
-            }
-        });
 		GLFWCursorPosCallback posCallback;
 		glfwSetCursorPosCallback(window, posCallback = new GLFWCursorPosCallback() {
 		    @Override
@@ -137,6 +118,15 @@ public class Main {
 			}
 
 			Tile[][] tiles = map.getMap();
+
+			if(tiles.length*16*GAME_SCALE < width-(32*UI_SCALE)){
+				viewx = 4*UI_SCALE - (tiles.length/2f)*16*GAME_SCALE + (renderer.getWidth()/2-32)*UI_SCALE;
+			}
+
+			if(tiles[0].length*16*GAME_SCALE < height-(((guiRenderer.mainFont.getGlyphSize()+8)*2 + 32)*UI_SCALE)){
+				viewy = (guiRenderer.mainFont.getGlyphSize()+8)*2*UI_SCALE + ((renderer.getHeight()-(guiRenderer.mainFont.getGlyphSize()+8)*2-32)*UI_SCALE)/2 - (tiles[0].length/2f)*16*GAME_SCALE;
+			}
+
 			float squaresize = 16*GAME_SCALE;
 			int minx = (int) -Math.ceil(viewx/squaresize)-1;
 			int miny = (int) -Math.ceil(((viewy-((guiRenderer.mainFont.getGlyphSize()+8)*2+4)*UI_SCALE)/squaresize))-1;
@@ -147,16 +137,16 @@ public class Main {
 				minx = 0;
 			}
 
-			if(maxx > tiles.length-1){
-				maxx = tiles.length-1;
+			if(maxx > tiles.length){
+				maxx = tiles.length;
 			}
 
 			if(miny < 0){
 				miny = 0;
 			}
 
-			if(maxy > tiles[0].length-1){
-				maxy = tiles[0].length-1;
+			if(maxy > tiles[0].length){
+				maxy = tiles[0].length;
 			}
 
 			for(int x=minx; x<maxx;x++){
@@ -166,8 +156,9 @@ public class Main {
 			}
             renderer.prepareRender();
 			//TODO: Make GUI.render call after this
+			guiRenderer.preRender(renderer);
 			renderer.renderTiles(viewx, viewy);
-			guiRenderer.renderGui(renderer, String.valueOf(fps), renderer.minesweeper);
+			guiRenderer.renderGui(renderer, String.valueOf(fps));
 			WindowManager.update(window);
 		}
 		WindowManager.destroyWindow(window);
