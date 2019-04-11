@@ -69,6 +69,13 @@ public class RenderEngine {
 		tiles.clear();
 	}
 
+	public float getWidth(){
+		return width/Main.UI_SCALE;
+	}
+
+	public float getHeight(){
+		return height/Main.UI_SCALE;
+	}
 	public void setTexture(Texture texture){
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
 	}

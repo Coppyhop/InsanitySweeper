@@ -1,21 +1,13 @@
 package com.kjbre.insanity.main;
 
-import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.system.MemoryStack.stackPush;
-import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.nio.IntBuffer;
-
-import com.kjbre.insanity.GuiRenderer;
+import com.kjbre.insanity.gui.GuiRenderer;
 import com.kjbre.insanity.renderer.Loader;
 import com.kjbre.insanity.renderer.WindowManager;
-import com.sun.javaws.WinOperaSupport;
 import org.lwjgl.glfw.*;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.system.MemoryStack;
 
 import com.kjbre.insanity.renderer.RenderEngine;
 
@@ -34,7 +26,7 @@ public class Main {
 	private float lastFrame;
 	private float lastFPS;
 	private float FPS;
-	public static float UI_SCALE = 2f, GAME_SCALE = 2.0f;
+	public static float UI_SCALE = 2f, GAME_SCALE = 1.5f;
 	private int fps = 0;
 	private int selicon = -1;
 	static float mousex =0, mousey =0;
@@ -119,7 +111,9 @@ public class Main {
 			FPS++;
 
 			//TODO GUIHandlerInputCode here
-			input();
+			if(mousex > 4*UI_SCALE && mousex < width-(28*UI_SCALE ) && mousey > ((guiRenderer.mainFont.getGlyphSize()+8)*2+4)*UI_SCALE && mousey < height - (28 * UI_SCALE)) {
+				input();
+			}
 			//END
 
 			//The Render Engine should handle all GAME_SCALE references in the Future
@@ -129,8 +123,8 @@ public class Main {
 				smoothx*=smoothFriction;
 				smoothy*=smoothFriction;
 			}
-			if(viewx >= 64*GAME_SCALE){
-				viewx = 64*GAME_SCALE;
+			if(viewx >= 32*GAME_SCALE){
+				viewx = 32*GAME_SCALE;
 			}
 			if(viewx <= -(map.getMap().length*16*GAME_SCALE) + width -64*GAME_SCALE){
 				viewx = -(map.getMap().length*16*GAME_SCALE) + width -64*GAME_SCALE;
@@ -138,21 +132,36 @@ public class Main {
 			if(viewy <= -(map.getMap()[0].length*16*GAME_SCALE) + height -64*GAME_SCALE){
 				viewy = -(map.getMap()[0].length*16*GAME_SCALE) + height -64*GAME_SCALE;
 			}
-			if(viewy >= 64*GAME_SCALE){
-				viewy =64*GAME_SCALE;
+			if(viewy >= 96*GAME_SCALE){
+				viewy =96*GAME_SCALE;
 			}
 
 			Tile[][] tiles = map.getMap();
 			float squaresize = 16*GAME_SCALE;
-			float minx = (float) -Math.ceil(viewx/squaresize)-1;
-			float miny = (float) -Math.ceil(viewy/squaresize)-1;
-			float maxx = (float) Math.ceil((-viewx/squaresize)+ (width/squaresize));
-			float maxy = (float) Math.ceil((-viewy/squaresize)+ (height/squaresize));
-			for(int x=0; x<tiles.length;x++){
-				for(int y=0; y<tiles[0].length;y++){
-					if(x > minx && y > miny && y < maxy && x < maxx){
+			int minx = (int) -Math.ceil(viewx/squaresize)-1;
+			int miny = (int) -Math.ceil(((viewy-((guiRenderer.mainFont.getGlyphSize()+8)*2+4)*UI_SCALE)/squaresize))-1;
+			int maxx = (int) Math.ceil((-viewx/squaresize)+ ((width-28*UI_SCALE)/squaresize));
+			int maxy = (int) Math.ceil((-viewy/squaresize)+ ((height-28*UI_SCALE)/squaresize));
+
+			if(minx < 0){
+				minx = 0;
+			}
+
+			if(maxx > tiles.length-1){
+				maxx = tiles.length-1;
+			}
+
+			if(miny < 0){
+				miny = 0;
+			}
+
+			if(maxy > tiles[0].length-1){
+				maxy = tiles[0].length-1;
+			}
+
+			for(int x=minx; x<maxx;x++){
+				for(int y=miny; y<maxy;y++){
 					renderer.processTile(tiles[x][y]);
-					}
 				}
 			}
             renderer.prepareRender();

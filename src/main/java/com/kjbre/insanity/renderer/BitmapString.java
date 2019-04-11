@@ -30,7 +30,7 @@ public class BitmapString {
 	public void render(float x, float y, RenderEngine renderer){
 		int curx = 0;
 		GL11.glPushMatrix();
-		GL11.glTranslatef(x, y, 0);
+		GL11.glTranslatef(x*Main.UI_SCALE, y*Main.UI_SCALE, 0);
 		renderer.setTexture(font.getFontTexture());
 		for(BitmapGlyph g: string){
 			curx += g.getXoffset();
